@@ -1,0 +1,35 @@
+#bookTable{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+.book-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.book-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+}
+
+.book-card p {
+    margin: 4px 0;
+}
+.remove{
+    margin-top: 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.remove:hover {
+    background-color: #c0392b;
+}
