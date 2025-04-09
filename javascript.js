@@ -16,73 +16,84 @@ function addBooksToLibrary(title, author, pages, read){
         this.pages = pages;
         this.read = read; 
         this.createBook = function () {
-            myLibrary.push(new Book(title, author, pages, read, crypto.randomUUID()));
+            const book =  new Book(title, author, pages, read, crypto.randomUUID());
+            myLibrary.push(book);
+            return book;
         }
 }
 function showLibrary () {
     myLibrary.forEach(book => {
-        return book;
+        console.log(book)
     });
 }
-/*
-const dune = new addBooksToLibrary("Dune", "Frank Herbert", "412 pages", "read");
-dune.createBook();
-const prideAndPrejudice = new addBooksToLibrary("Pride and Prejudice", "Jane Austen", "279 pages", "not read yet");
-prideAndPrejudice.createBook();
-const harryPotter = new addBooksToLibrary("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", "309 pages", "read");
-harryPotter.createBook();
-const nineteenEightyFour = new addBooksToLibrary("1984", "George Orwell", "328 pages", "not read yet");
-nineteenEightyFour.createBook();
-const toKillAMockingbird = new addBooksToLibrary("To Kill a Mockingbird", "Harper Lee", "281 pages", "read");
-toKillAMockingbird.createBook();
-const theHobbit = new addBooksToLibrary("The Hobbit", "J.R.R. Tolkien", "295 pages", "not read yet");
-theHobbit.createBook();
-*/
-showLibrary();
+
 const newBook = document.querySelector(".new");
 const dialog = document.getElementById("dialog");
 const close = document.querySelector("#close");
-const submit = document.querySelector("#submit");
+const submit = document.getElementById("submit");
 const bookForm = document.getElementById("bookForm");
+const bookTable = document.getElementById("bookTable");
+        
 
 newBook.addEventListener("click", () => {
     dialog.showModal();
-    submit.addEventListener("click", (e) => {
-       
+});
+document.getElementById("bookForm").addEventListener("submit", (e) => {
     
         let title = document.getElementById("title").value;
         let author = document.getElementById("author").value;
         let pages = document.getElementById("pages").value;
         let read = document.getElementById("read").value;
     
-        const newEntry = new addBooksToLibrary(title, author, pages + " pages", read);
-        newEntry.createBook();
-        let table = document.querySelector(".table");
+        const newEntry = new addBooksToLibrary(title, author, pages + " pages", read).createBook();
+        
+        console.log(newEntry.id)
+        
         const card = document.createElement("div");
+        bookTable.appendChild(card);
         card.classList.add("book-card");
+        card.setAttribute("data-id", newEntry.id);
+        card.setAttribute("data-read", newEntry.read);
+
         card.innerHTML = `
         <h3> ${newEntry.title}</h3>
         <p><strong>Author:</strong> ${newEntry.author}</p>
         <p><strong>Pages:</strong> ${newEntry.pages}</p>
-        <p><strong>Status:</strong> ${newEntry.read}</p>
+        <p><strong>Status:</strong><span class="readStatus"> ${newEntry.read}</span></p>
         <button class="remove">Remove </button>
+        <button class="status">Change Status </button>
         `;
         card.querySelector(".remove").addEventListener("click", () => {
-            card.remove();
-
-            const index = myLibrary.indexOf(newEntry);
+            const bookId = card.getAttribute("data-id");
+        
+            const index = myLibrary.findIndex(book => book.id === bookId);
             if (index > -1){
                 myLibrary.splice(index, 1);
+                
+            }
+
+            card.remove();
+            card.removeAttribute("data-id");
+        });
+        card.querySelector(".status").addEventListener("click", () => {
+            const bookStatus = card.getAttribute("data-read");
+            if(bookStatus === "Read"){
+                const readStatus = card.querySelector(".readStatus");
+                newEntry.read = "Not read yet";
+                card.setAttribute("data-read", newEntry.read);
+                readStatus.textContent = ` ${newEntry.read}`;
+            } 
+            if ( bookStatus === "Not read yet"){
+                const readStatus = card.querySelector(".readStatus");
+                newEntry.read = "Read";
+                card.setAttribute("data-read", newEntry.read);
+                readStatus.textContent = ` ${newEntry.read}`;
             }
         });
-        
-        document.getElementById("bookTable").appendChild(card);
         e.preventDefault();
         dialog.close();
-    });
-
+        document.getElementById("bookForm").reset();
 });
-
 
 close.addEventListener("click", (e) => {
     e.preventDefault();
