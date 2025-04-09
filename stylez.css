@@ -60,11 +60,15 @@ input{
     padding-left: 10px;
 }
 select{
+    border-radius: 0px;
     height: 25px;
     border: 1px solid black;
-    
     background-color: rgb(240, 240, 240) ;
 }
+select > *{
+    border-radius: 0px;
+}
+
 #bookForm > div{
     display: flex;
     flex-direction: column;
