@@ -1,31 +1,38 @@
 const myLibrary = [
 
 ];
-
-function Book(title, author, pages, read, id) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read; 
-    this.id = id;
+class Book {
+    constructor(title, author, pages, read, id) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+        this.id = id;
+    }
 }
 
-function addBooksToLibrary(title, author, pages, read){
+class addBooksToLibrary{
+    constructor(title, author, pages, read){
         this.title = title;
         this.author = author;
         this.pages = pages;
         this.read = read; 
-        this.createBook = function () {
-            const book =  new Book(title, author, pages, read, crypto.randomUUID());
-            myLibrary.push(book);
-            return book;
-        }
-}
-function showLibrary () {
-    myLibrary.forEach(book => {
+    }
+
+    createBook () {
+        const book =  new Book(title, author, pages, read, crypto.randomUUID());
+        myLibrary.push(book);
+        return book;
+    }
+    showLibrary () {
+        myLibrary.forEach(book => {
         console.log(book)
-    });
+        });
+    }   
 }
+
+
+
 
 const newBook = document.querySelector(".new");
 const dialog = document.getElementById("dialog");
@@ -45,7 +52,8 @@ document.getElementById("bookForm").addEventListener("submit", (e) => {
         let pages = document.getElementById("pages").value;
         let read = document.getElementById("read").value;
     
-        const newEntry = new addBooksToLibrary(title, author, pages + " pages", read).createBook();
+        const newEntry = new addBooksToLibrary(title, author, pages + " pages", read);
+        newEntry.createBook();
         
         console.log(newEntry.id)
         
